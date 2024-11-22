@@ -14,22 +14,26 @@ app.use(express.static('public'));
 
 // handle webp to png
 app.post('/api/convert', upload.single('file'), async (req, res) => {
-  const { file } = req;
+    const { file } = req;
 
-  if (!file || path.extname(file.originalname).toLowerCase() !== '.webp') {
-    return res.status(400).json({ error: 'Only .webp files are supported!' });
-  }
+    if (!file || path.extname(file.originalname).toLowerCase() !== '.webp') {
+        return res.status(400).json({ error: 'Only .webp files are supported!' });
+    }
 
-  const outputFileName = `${file.filename}.png`;
-  const outputPath = path.join(__dirname, 'uploads', outputFileName);
+    const outputFileName = `${file.filename}.png`;
+    const outputPath = path.join(__dirname, 'uploads', outputFileName);
 
-  try {
-    await sharp(file.path).toFormat('png').toFile(outputPath);
-    fs.unlinkSync(file.path); // clean up original file
-    res.json({ message: 'Conversion successful!', download: `/uploads/${outputFileName}` });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to convert file.' });
-  }
+    try {
+        await sharp(file.path).toFormat('png').toFile(outputPath);
+        fs.unlinkSync(file.path); // clean up original file
+        return res.json({
+            message: 'Conversion successful!',
+            download: `/uploads/${outputFileName}`,
+        });
+    } catch (err) {
+        console.error('Conversion error:', err);
+        return res.status(500).json({ error: 'Failed to convert file.' });
+    }
 });
 
 // serve converted files
