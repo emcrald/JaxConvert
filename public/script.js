@@ -15,12 +15,19 @@ form.addEventListener('submit', async (e) => {
 
         if (!res.ok) throw new Error('Conversion failed.');
 
-        const data = await res.json();
-        output.innerHTML = `
-        <p>${data.message}</p>
-        <a href="${data.download}" download>Download Converted File</a>
-      `;
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+
+        // create temporary link
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'converted.png';
+        a.click();
+
+        // cleanup
+        URL.revokeObjectURL(url);
+        output.textContent = 'Conversion complete!';
     } catch (err) {
         output.textContent = 'Error: ' + err.message;
     }
-});  
+});

@@ -20,26 +20,17 @@ app.post('/api/convert', upload.single('file'), async (req, res) => {
         return res.status(400).json({ error: 'Only .webp files are supported!' });
     }
 
-    const outputFileName = `${file.filename}.png`;
-    const outputPath = path.join(__dirname, 'uploads', outputFileName);
-
     try {
-        await sharp(file.path).toFormat('png').toFile(outputPath);
+        // convert file buffer directly
+        const pngBuffer = await sharp(file.buffer).toFormat('png').toBuffer();
 
-        // delay before unlinking file
-        setTimeout(async () => {
-            try {
-                await fs.unlink(file.path);
-            } catch (err) {
-                console.error('Cleanup error:', err);
-            }
-        }, 100);
-
-
-        return res.json({
-            message: 'Conversion successful!',
-            download: `/uploads/${outputFileName}`,
+        res.set({
+            'Content-Type': 'image/png',
+            'Content-Disposition': `attachment; filename="${file.originalname.replace('.webp', '.png')}"`,
         });
+
+        // send converted file
+        return res.send(pngBuffer);
     } catch (err) {
         console.error('Conversion error:', err);
         return res.status(500).json({ error: 'Failed to convert file.' });
