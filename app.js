@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs/promises');
 const sharp = require('sharp');
 
 const app = express();
@@ -25,7 +25,8 @@ app.post('/api/convert', upload.single('file'), async (req, res) => {
 
     try {
         await sharp(file.path).toFormat('png').toFile(outputPath);
-        fs.unlinkSync(file.path); // clean up original file
+        await fs.unlink(file.path); // clean up original file async
+
         return res.json({
             message: 'Conversion successful!',
             download: `/uploads/${outputFileName}`,
