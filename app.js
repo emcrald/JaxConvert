@@ -25,7 +25,16 @@ app.post('/api/convert', upload.single('file'), async (req, res) => {
 
     try {
         await sharp(file.path).toFormat('png').toFile(outputPath);
-        await fs.unlink(file.path); // clean up original file async
+
+        // delay before unlinking file
+        setTimeout(async () => {
+            try {
+                await fs.unlink(file.path);
+            } catch (err) {
+                console.error('Cleanup error:', err);
+            }
+        }, 100);
+
 
         return res.json({
             message: 'Conversion successful!',
