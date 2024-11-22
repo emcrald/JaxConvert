@@ -8,7 +8,7 @@ const app = express();
 const PORT = 3000;
 
 // setup multer for file uploads
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
 
 app.use(express.static('public'));
 
