@@ -14,13 +14,16 @@ form.addEventListener('submit', async (e) => {
     output.textContent = 'Converting...';
 
     try {
-      const res = await fetch('/.netlify/functions/api/convert', {
+      const res = await fetch('https://jaxconvert.netlify.app/.netlify/functions/api/convert', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ file: base64, filename: file.name }),
       });
 
-      if (!res.ok) throw new Error('Conversion failed.');
+      if (!res.ok) {
+        console.error('Server responded with error:', res.statusText);
+        throw new Error('Conversion failed.');
+      }
 
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
@@ -33,6 +36,7 @@ form.addEventListener('submit', async (e) => {
       URL.revokeObjectURL(url);
       output.textContent = 'Conversion complete!';
     } catch (err) {
+      console.error('Fetch error:', err);
       output.textContent = 'Error: ' + err.message;
     }
   };
