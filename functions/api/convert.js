@@ -23,8 +23,8 @@ exports.handler = async (event) => {
         'Content-Type': 'image/png',
         'Content-Disposition': `attachment; filename="${body.filename.replace('.webp', '.png')}"`,
       },
-      body: pngBuffer.toString('base64'), // send file back as base64
-      isBase64Encoded: true,
+      body: pngBuffer,
+      isBase64Encoded: false,
     };
   } catch (err) {
     console.error('Conversion error:', err);
