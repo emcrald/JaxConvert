@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
       output.textContent = 'Converting...';
 
       try {
-        const res = await fetch('https://jaxconvert.netlify.app/.netlify/functions/api/convert', {
+        const res = await fetch('.netlify/functions/convert', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ file: base64, filename: file.name }),
