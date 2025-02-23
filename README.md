@@ -60,7 +60,14 @@ Try the live version: [**Jax Convert**](https://jaxconvert.netlify.app)
 - **Sharp** – Image processing  
 - **Netlify Functions** – Serverless backend  
 - **JavaScript** – Frontend logic  
-- **HTML & CSS** – Simple UI  
+- **HTML & CSS** – Simple UI
+
+---
+
+## Designed in Figma
+
+Jax Convert was fully designed in **Figma** to provide a simple, user-friendly interface for quick file conversions.  
+![image](https://github.com/user-attachments/assets/0c96a54f-5e51-4712-83a2-27451146651c)
 
 ---
 
