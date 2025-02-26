@@ -15,7 +15,7 @@ Jax Convert is a browser-based image converter that allows users to upload `.web
 
 ### Live Demo
 
-Try the live version: [**Jax Convert**](https://jaxconvert.netlify.app)
+Try the live version: [**Jax Convert**](https://convert.emcrald.me)
 
 ---
 
